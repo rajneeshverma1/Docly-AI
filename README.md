@@ -292,3 +292,5 @@ Modifications and extensions: **Rajneesh Verma**, 2025.
 - Dev note 11: incremental maintenance update on 2026-03-06.
 
 - Dev note 21: incremental maintenance update on 2026-03-16.
+
+- Dev note 1: incremental maintenance update on 2026-02-24.
