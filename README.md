@@ -286,3 +286,5 @@ Modifications and extensions: **Rajneesh Verma**, 2025.
 - [Prisma](https://prisma.io/)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Langfuse](https://langfuse.com/) — LLM observability
+
+- Dev note 1: incremental maintenance update on 2026-02-24.
