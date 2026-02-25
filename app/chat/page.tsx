@@ -370,3 +370,5 @@ export default function ChatPage() {
     </div>
   );
 }
+
+// Dev note 2: incremental maintenance update on 2026-02-25.
