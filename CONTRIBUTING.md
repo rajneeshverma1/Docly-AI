@@ -57,3 +57,5 @@ Open a GitHub Issue with:
 - Dev note 15: incremental maintenance update on 2026-03-10.
 
 - Dev note 25: incremental maintenance update on 2026-03-20.
+
+- Dev note 5: incremental maintenance update on 2026-02-28.
