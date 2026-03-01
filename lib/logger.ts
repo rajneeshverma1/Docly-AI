@@ -30,3 +30,5 @@ export const logger = {
     if (process.env.NODE_ENV !== 'production') log('debug', msg, meta);
   },
 };
+
+// Dev note 6: incremental maintenance update on 2026-03-01.
