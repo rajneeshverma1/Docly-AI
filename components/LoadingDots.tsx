@@ -13,3 +13,5 @@ export default function LoadingDots() {
     </div>
   );
 }
+
+// Dev note 7: incremental maintenance update on 2026-03-02.
