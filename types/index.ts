@@ -53,3 +53,5 @@ export enum DocumentStatus {
   READY = 'ready',
   ERROR = 'error',
 }
+
+// Dev note 10: incremental maintenance update on 2026-03-05.
