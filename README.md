@@ -288,3 +288,5 @@ Modifications and extensions: **Rajneesh Verma**, 2025.
 - [Langfuse](https://langfuse.com/) — LLM observability
 
 - Dev note 1: incremental maintenance update on 2026-02-24.
+
+- Dev note 11: incremental maintenance update on 2026-03-06.
