@@ -1,0 +1,45 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Document {
+  id           String   @id @default(uuid())
+  name         String
+  sourceType   String   @default("pdf") // "pdf" | "link" | "notion" | "google_docs"
+  sourceUrl    String?  // For link / notion / google_docs: external URL or doc id
+  numPages     Int?     // Optional: PDF page count; null for non-PDF
+  summary      String?  // AI-generated summary of chunks
+  contentHash  String?  @unique // SHA-256 of file content for dedup (PDF only)
+  totalChunks  Int?     // child chunk count for adaptive retrieval
+  uploadedAt   DateTime @default(now())
+  workspaceId  String?  // Optional: for future multi-workspace
+  uploadedBy   String?  // Optional: user id when auth is added
+  chunks       DocumentChunk[]
+
+  @@index([name])
+  @@index([uploadedAt])
+  @@map("documents")
+}
+
+model DocumentChunk {
+  id         String   @id @default(uuid())
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  text       String
+  embedding  String   // Stored as JSON string
+  chunkIndex Int
+  startWord  Int
+  createdAt  DateTime @default(now())
+  
+  @@unique([documentId, chunkIndex])
+  @@index([documentId])
+  @@map("document_chunks")
+}
