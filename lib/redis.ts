@@ -4,9 +4,9 @@
  */
 
 import Redis from 'ioredis';
+import { CACHE_TTL_SECONDS } from '@/lib/config';
 
 const REDIS_URL = process.env.REDIS_URL;
-const CACHE_TTL_SECONDS = 60;
 
 let redis: Redis | null = null;
 
