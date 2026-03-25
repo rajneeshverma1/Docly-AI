@@ -255,8 +255,10 @@ export default function ChatPage() {
 
   const suggestedQuestions = [
     'What is this document about?',
-    'Summarize the key points',
+    'Summarize the key points in bullet form',
     'What are the main conclusions?',
+    'List any numbers, dates, or statistics mentioned',
+    'What questions does this document answer?',
   ];
 
   return (
