@@ -49,8 +49,9 @@ export default function DocumentList({ documents, selectedDocument, onSelectDocu
   if (!documents || documents.length === 0) {
     return (
       <div className="text-center py-8 text-gray-600">
-        <FileText className="w-12 h-12 mx-auto mb-2 opacity-50" />
-        <p className="text-sm">No documents uploaded yet</p>
+        <FileText className="w-12 h-12 mx-auto mb-3 opacity-30" />
+        <p className="text-sm font-medium text-gray-500">No documents yet</p>
+        <p className="text-xs text-gray-700 mt-1">Upload a PDF to get started</p>
       </div>
     );
   }
