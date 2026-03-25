@@ -2,10 +2,14 @@
 
 export default function LoadingDots() {
   return (
-    <div className="flex gap-1 items-center">
-      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-      <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+    <div className="flex gap-1.5 items-center py-1" aria-label="Loading response">
+      {[0, 150, 300].map((delay) => (
+        <div
+          key={delay}
+          className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+          style={{ animationDelay: `${delay}ms`, animationDuration: '0.8s' }}
+        />
+      ))}
     </div>
   );
 }
