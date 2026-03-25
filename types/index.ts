@@ -46,6 +46,7 @@ export interface SearchResult extends VectorStoreItem {
   similarity: number;
 }
 
+/** Upload/processing lifecycle states for a document */
 export enum DocumentStatus {
   UPLOADING = 'uploading',
   PROCESSING = 'processing',
