@@ -4,6 +4,7 @@
  */
 
 import { parseWithPoppler } from '@/lib/poppler-parser';
+import { CHUNK_SIZE_WORDS, CHUNK_OVERLAP_WORDS } from '@/lib/config';
 import type { DocumentChunk } from '@/types';
 
 export interface PDFData {
@@ -19,8 +20,8 @@ export async function parsePDF(buffer: Buffer, _filename?: string): Promise<PDFD
 export function chunkText(
   text: string,
   documentName: string,
-  chunkSize: number = 500,
-  overlap: number = 100
+  chunkSize: number = CHUNK_SIZE_WORDS,
+  overlap: number = CHUNK_OVERLAP_WORDS
 ): DocumentChunk[] {
   const words = text.split(/\s+/);
   const chunks: DocumentChunk[] = [];
