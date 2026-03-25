@@ -4,14 +4,12 @@ import { z } from 'zod';
 import { createQueryEmbedding } from '@/lib/jina';
 import { searchVectorStore, getTotalChunksInCorpus } from '@/lib/db';
 import { SYSTEM_PROMPT } from '@/lib/prompts';
+import { CHAT_MODEL, MAX_TOKENS, MAX_MESSAGE_LENGTH } from '@/lib/config';
 import {
   startActiveObservation,
   getActiveTraceId,
   updateActiveObservation,
 } from '@langfuse/tracing';
-
-const CHAT_MODEL = 'llama-3.3-70b-versatile';
-const MAX_MESSAGE_LENGTH = 2000;
 
 const chatBodySchema = z.object({
   message: z.string().min(1).max(MAX_MESSAGE_LENGTH),
@@ -136,7 +134,7 @@ export async function POST(request: Request) {
             model: groq(CHAT_MODEL),
             system: SYSTEM_PROMPT,
             prompt: userPrompt,
-            maxTokens: 1000,
+            maxTokens: MAX_TOKENS,
           });
 
           
