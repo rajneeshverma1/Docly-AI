@@ -183,6 +183,7 @@ wikimind-rag/
 │       │   ├── route.ts        # List / delete documents
 │       │   └── chunks/route.ts # Export chunks as JSON
 │       ├── feedback/route.ts   # Langfuse feedback endpoint
+│       ├── health/route.ts     # GET /api/health — DB ping + version
 │       └── jobs/[jobId]/route.ts # Bull job status polling
 ├── components/
 │   ├── ui/                     # shadcn/ui primitives
