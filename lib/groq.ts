@@ -1,7 +1,5 @@
 import Groq from 'groq-sdk';
-
-const SUMMARIZATION_MODEL = 'llama-3.3-70b-versatile';
-const MAX_SUMMARY_INPUT_LENGTH = 12000;
+import { SUMMARIZATION_MODEL, MAX_SUMMARY_INPUT_LENGTH } from '@/lib/config';
 
 let groqClient: Groq | null = null;
 
