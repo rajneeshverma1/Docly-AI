@@ -1,7 +1,7 @@
-# WikiMind — AI-Powered Document Chat
+# Docly AI — AI-Powered Document Chat
 
-> **Modified and extended by [Rajneesh Verma](https://github.com/rajneeshverma)**
-> Original scaffold: SmartDoc AI (MIT License)
+> Built by **[Rajneesh Verma](https://github.com/rajneeshverma1)** · MIT License
+> Original scaffold: SmartDoc AI (MIT) — significantly refactored and extended
 
 WikiMind lets you upload PDF documents and have intelligent, cited conversations about their contents — powered by a production-grade RAG (Retrieval-Augmented Generation) pipeline.
 
