@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDocuments, deleteDocument } from '@/lib/db';
 import { cacheGet, cacheSet, cacheDel } from '@/lib/redis';
-
-const DOCUMENTS_CACHE_KEY = 'documents:list';
+import { DOCUMENTS_CACHE_KEY } from '@/lib/config';
+import { toErrorMessage } from '@/lib/errors';
 
 export async function GET() {
   try {
@@ -17,7 +17,7 @@ export async function GET() {
   } catch (error) {
     console.error('Get documents error:', error);
     return NextResponse.json(
-      { error: 'Failed to get documents' },
+      { error: toErrorMessage(error) },
       { status: 500 }
     );
   }
@@ -39,7 +39,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     console.error('Delete document error:', error);
     return NextResponse.json(
-      { error: 'Failed to delete document' },
+      { error: toErrorMessage(error) },
       { status: 500 }
     );
   }
