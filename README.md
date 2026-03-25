@@ -204,6 +204,9 @@ wikimind-rag/
 │   ├── queue.ts                # Bull queue helpers
 │   ├── redis.ts                # Redis cache helpers
 │   ├── hash.ts                 # SHA-256 content hash
+│   ├── config.ts               # Centralised constants (chunk size, top-K, models)
+│   ├── errors.ts               # Typed error classes (AppError, ValidationError…)
+│   ├── logger.ts               # Structured JSON logger
 │   ├── prompts.ts              # System prompt
 │   └── utils.ts                # cn() utility
 ├── prisma/
