@@ -270,7 +270,12 @@ export default function ChatPage() {
           } bg-zinc-950 border-r border-zinc-800 transition-all duration-300 flex flex-col overflow-hidden`}
         >
           <div className="p-4 border-b border-zinc-800">
-            <h2 className="font-semibold text-white mb-4">Documents</h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold text-white">Documents</h2>
+              <span className="text-xs bg-zinc-800 text-gray-400 px-2 py-0.5 rounded-full">
+                {documents.length}/3
+              </span>
+            </div>
             <FileUpload
               onUpload={handleUpload}
               onUploadLink={handleUploadLink}
