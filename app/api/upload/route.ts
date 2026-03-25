@@ -8,9 +8,8 @@ import { computeContentHash } from '@/lib/hash';
 import { addPdfJob, isQueueAvailable } from '@/lib/queue';
 import { processPdf } from '@/lib/pdf-processor';
 import { cacheDel } from '@/lib/redis';
+import { MAX_DOCUMENTS } from '@/lib/config';
 import type { DocumentSourceType } from '@/types';
-
-const MAX_DOCUMENTS = 3;
 
 type UploadBody =
   | { file: File }
