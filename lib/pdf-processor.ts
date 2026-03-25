@@ -7,6 +7,7 @@ import { parsePDF, chunkText } from '@/lib/pdf-parser';
 import { createEmbedding } from '@/lib/jina';
 import { summarizeChunks } from '@/lib/groq';
 import { prisma, findDocumentByContentHash } from '@/lib/db';
+import { logger } from '@/lib/logger';
 import type { PdfJobResult } from '@/lib/queue';
 
 // const JINA_CONCURRENCY = 2;
@@ -44,10 +45,12 @@ export async function processPdf(
   console.time('parsing');
   const { text, numPages } = await parsePDF(buffer, fileName);
   console.timeEnd('parsing');
+  logger.info('PDF parsed', { fileName, numPages });
 
   console.time('chunking');
   const chunks = chunkText(text, fileName);
   console.timeEnd('chunking');
+  logger.info('PDF chunked', { fileName, chunkCount: chunks.length });
   if (chunks.length === 0) {
     throw new Error(
       'No text could be extracted from this PDF. It may be image-only (scanned) or Poppler may not be installed.'
