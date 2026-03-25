@@ -7,6 +7,12 @@ export interface Message {
 
 export type DocumentSourceType = 'pdf' | 'link' | 'notion' | 'google_docs';
 
+/** Standardised API error shape returned by all routes */
+export interface ApiError {
+  error: string;
+  code?: string;
+}
+
 export interface DocumentMetadata {
   name: string;
   sourceType?: DocumentSourceType;
