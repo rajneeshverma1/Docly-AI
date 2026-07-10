@@ -91,7 +91,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-zinc-800 py-8">
         <div className="container mx-auto px-4 text-center text-gray-600 text-sm">
-          <p>© 2025 Docly AI — Built by Rajneesh Verma. Powered by Groq + Jina AI.</p>
+          <p>build by rajneesh</p>
         </div>
       </footer>
     </div>
