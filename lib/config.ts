@@ -18,12 +18,12 @@ export const RRF_K = 60;                   // RRF fusion constant
 export const TOP_AFTER_RRF = 20;           // candidates before Jina rerank
 
 // ─── LLM ──────────────────────────────────────────────────────────────────────
-export const CHAT_MODEL = 'llama3-70b-8192';
+export const CHAT_MODEL = 'qwen/qwen3.8-27b';
 export const MAX_TOKENS = 1000;
 export const MAX_MESSAGE_LENGTH = 2000;
 
 // ─── Summarization ────────────────────────────────────────────────────────────
-export const SUMMARIZATION_MODEL = 'llama3-70b-8192';
+export const SUMMARIZATION_MODEL = 'qwen/qwen3.8-27b';
 export const MAX_SUMMARY_INPUT_LENGTH = 12000;
 
 // ─── Cache ────────────────────────────────────────────────────────────────────
