@@ -16,7 +16,7 @@ export default function Home() {
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#FF6600]/10 border border-[#FF6600]/20 rounded-full mb-8">
             <Sparkles className="w-4 h-4 text-[#FF6600]" />
             <span className="text-sm font-semibold uppercase tracking-wide text-[#D95500]">
-              Y Combinator Style • AI Document Intelligence
+              AI-Powered Document Intelligence
             </span>
           </div>
           

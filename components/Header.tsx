@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { FileText } from 'lucide-react';
 
 interface HeaderProps {
   variant?: 'dark' | 'cream';
@@ -13,7 +14,7 @@ export default function Header({ variant = 'dark' }: HeaderProps) {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded bg-[#FF6600] text-white flex items-center justify-center font-bold text-base shadow-sm">
-              Y
+              <FileText className="w-4 h-4 text-white" />
             </div>
             <span className="font-bold text-xl text-[#1A1A1A] tracking-tight">Docly AI</span>
           </Link>
@@ -32,4 +33,3 @@ export default function Header({ variant = 'dark' }: HeaderProps) {
     </header>
   );
 }
-
