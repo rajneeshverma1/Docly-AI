@@ -1,92 +1,51 @@
 'use client';
 
 import Link from 'next/link';
-import { FileText, MessageSquare, CheckCircle, ArrowRight, Upload, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { ArrowRight, Sparkles } from 'lucide-react';
 import Header from '@/components/Header';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
-      <Header />
+    <div className="min-h-screen bg-[#FBF9F5] text-[#1A1A1A] flex flex-col justify-between font-sans selection:bg-[#FF6600]/20 selection:text-[#FF6600]">
+      <Header variant="cream" />
       
-      {/* Hero Section */}
-      <section className="container mx-auto px-4 py-20 text-center">
-        <div className="max-w-4xl mx-auto">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-white" />
-            <span className="text-sm text-gray-300 font-medium">AI-Powered Document Intelligence</span>
+      {/* YC-Style Clean Hero Section */}
+      <main className="flex-1 flex items-center justify-center px-6 py-24">
+        <div className="max-w-3xl mx-auto text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#FF6600]/10 border border-[#FF6600]/20 rounded-full mb-8">
+            <Sparkles className="w-4 h-4 text-[#FF6600]" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#D95500]">
+              Y Combinator Style • Minimal AI Intelligence
+            </span>
           </div>
           
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-white">
+          {/* Main Title */}
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-[#111111] mb-6 leading-[1.15]">
             Docly AI
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-2xl mx-auto">
-            Chat with your documents. Upload any PDF and get instant, cited answers powered by Groq + Jina AI.
+          {/* Subtitle */}
+          <p className="text-lg md:text-xl text-[#555555] mb-10 max-w-xl mx-auto font-normal leading-relaxed">
+            Chat with your documents instantly. Upload any PDF and get accurate, cited answers powered by Groq + Jina AI.
           </p>
           
-          <Link href="/chat">
-            <Button size="lg" className="bg-white hover:bg-gray-100 text-black px-8 py-6 text-lg rounded-lg font-semibold transition-all">
-              Get Started
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-600 transition-all">
-            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
-              <Upload className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">Upload PDFs</h3>
-            <p className="text-gray-400">
-              Simply drag and drop your PDF documents. We'll process them instantly and make them searchable.
-            </p>
-          </div>
-
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-600 transition-all">
-            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
-              <MessageSquare className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">Ask Anything</h3>
-            <p className="text-gray-400">
-              Ask questions in natural language. Our AI understands context and provides relevant answers.
-            </p>
-          </div>
-
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 hover:border-zinc-600 transition-all">
-            <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center mb-4">
-              <CheckCircle className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3 text-white">Get Cited Answers</h3>
-            <p className="text-gray-400">
-              Every answer includes citations showing exactly which document and page the information came from.
-            </p>
+          {/* Main Call To Action */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link href="/chat">
+              <button className="w-full sm:w-auto px-8 py-4 bg-[#FF6600] hover:bg-[#E55C00] text-white font-semibold text-base rounded-lg transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 group">
+                Get Started with Docly AI
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </Link>
           </div>
         </div>
-      </section>
+      </main>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20 text-center">
-        <div className="max-w-3xl mx-auto bg-zinc-900 border border-zinc-700 rounded-2xl p-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-            Ready to transform how you work with documents?
-          </h2>
-          <p className="text-gray-400 mb-8 text-lg">
-            Start chatting with your PDFs in seconds. No signup required.
-          </p>
-          <Link href="/chat">
-            <Button size="lg" className="bg-white text-black hover:bg-gray-100 px-8 py-6 text-lg rounded-lg font-semibold">
-              Try Docly AI Now
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
-        </div>
-      </section>
+      {/* Clean Minimalist Bottom Bar */}
+      <div className="border-t border-[#E5E2D9] py-6 text-center text-xs text-[#888888]">
+        Powered by Groq LLM & Jina Embeddings
+      </div>
     </div>
   );
 }
