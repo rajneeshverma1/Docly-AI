@@ -1,300 +1,132 @@
-# Docly AI — AI-Powered Document Chat
+# Docly AI — Intelligent RAG Document Chat
 
-> Built by **[Rajneesh Verma](https://github.com/rajneeshverma1)** · MIT License
-> Original scaffold: SmartDoc AI (MIT) — significantly refactored and extended
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-14.2-black?style=for-the-badge&logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/TypeScript-5.5-blue?style=for-the-badge&logo=typescript" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Groq-Llama%203.3-orange?style=for-the-badge" alt="Groq" />
+  <img src="https://img.shields.io/badge/Jina_AI-Embeddings%20%26%20Rerank-purple?style=for-the-badge" alt="Jina AI" />
+  <img src="https://img.shields.io/badge/Prisma-5.22-darkblue?style=for-the-badge&logo=prisma" alt="Prisma" />
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License" />
+</p>
 
-WikiMind lets you upload PDF documents and have intelligent, cited conversations about their contents — powered by a production-grade RAG (Retrieval-Augmented Generation) pipeline.
-
----
-
-## What It Does
-
-1. Upload a PDF (drag & drop)
-2. The document is parsed, chunked, and embedded using Jina AI
-3. Ask any question in natural language
-4. The app retrieves the most relevant chunks using hybrid search (BM25 + cosine similarity + Jina reranking)
-5. Groq's Llama 3.3 70B streams a cited answer back in real time
+> **Docly AI** is an advanced AI-powered Document Intelligence application. Upload your PDFs and have instant, cited conversations with your documents using a production-grade **Retrieval-Augmented Generation (RAG)** pipeline.
 
 ---
 
-## My Contributions & Improvements
+## ✨ Features
 
-This project was forked from an open-source scaffold and significantly refactored and extended:
-
-### Refactoring & Code Quality
-- Rewrote `lib/db.ts` — extracted `parseEmbedding()` helper, replaced all unsafe `JSON.parse` calls, fixed a division-by-zero bug in `cosineSimilarity`, removed dead code
-- Added Zod input validation to the chat API route with a `MAX_MESSAGE_LENGTH` guard
-- Added `@@unique([documentId, chunkIndex])`, `@@index([documentId])`, `@@index([name])`, `@@index([uploadedAt])` to the Prisma schema for query performance
-- Cleaned up `package.json`: renamed project, bumped to v1.0.0, added `db:generate`, `db:migrate`, `db:studio` scripts
-
-### UI / UX
-- Redesigned the entire color scheme from blue/slate to a clean **black & white** monochrome palette
-- Updated `app/layout.tsx` metadata (title, description) to reflect the real stack
-- Removed stale references to OpenAI/GPT-4o-mini throughout the UI
-
-### Documentation
-- Completely rewrote `README.md` — accurate tech stack, real setup steps, architecture diagram, env variable reference, contribution notes, and open-source attribution
-- Added `.env.example` for clean onboarding
-
-### Architecture Decisions Preserved
-- Adaptive retrieval (small corpus: cosine; large corpus: BM25 + RRF + Jina rerank) — kept as-is, it's well-designed
-- Bull + Redis optional queue for async PDF processing — kept, documented clearly
-- Langfuse observability integration — kept, documented as optional
+- 📄 **PDF Upload & Ingestion**: Drag & drop PDF uploads with automatic SHA-256 deduplication and text chunking.
+- ⚡ **Ultra-Fast RAG Pipeline**: Powered by **Groq Llama 3.3 70B** for lightning-fast answer generation.
+- 🔍 **Hybrid Vector Retrieval**: Uses **Jina AI (`jina-embeddings-v3`)** for embeddings and **Jina Reranker (`jina-reranker-v2-base-multilingual`)** for maximum precision context retrieval.
+- 🎯 **Cited Responses**: Every AI answer includes exact source citations referencing the specific document and content chunk.
+- 🎨 **Minimal Dark Aesthetic**: High-contrast, sleek dark UI built with Tailwind CSS and Radix UI / shadcn components.
+- 📊 **Optional Async Queue**: Background job processing support via Bull & Redis for heavy PDF parsing.
+- 🔭 **Observability**: Built-in Langfuse integration for tracing LLM latency, token usage, and retrieval telemetry.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Framework | Next.js 14 (App Router), TypeScript |
-| UI | React 18, Tailwind CSS, shadcn/ui |
-| LLM | Groq — `llama-3.3-70b-versatile` |
-| Embeddings | Jina AI — `jina-embeddings-v3` |
-| Reranking | Jina AI — `jina-reranker-v2-base-multilingual` |
-| Summarization | Groq — `llama-3.3-70b-versatile` |
-| Database | Prisma ORM + SQLite (dev) / PostgreSQL (prod) |
-| Queue | Bull + Redis (optional, for async PDF processing) |
-| Observability | Langfuse + OpenTelemetry (optional) |
-| PDF Parsing | node-poppler (Poppler binaries) |
+| **Framework** | [Next.js 14 (App Router)](https://nextjs.org/) + TypeScript |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) + Radix UI Primitives |
+| **LLM Inference** | [Groq](https://groq.com/) (`llama-3.3-70b-versatile`) |
+| **Embeddings** | [Jina AI](https://jina.ai/) (`jina-embeddings-v3`) |
+| **Reranking** | Jina Reranker (`jina-reranker-v2-base-multilingual`) |
+| **Database** | Prisma ORM + SQLite (Development) / PostgreSQL (Production) |
+| **PDF Parsing** | `node-poppler` + `pdf-parse` |
+| **Background Queue** | Bull + Redis (Optional) |
 
 ---
 
-## How It Works — Architecture
+## ⚙️ Architecture & Pipeline
 
 ```
-User uploads PDF
-      │
-      ▼
-SHA-256 dedup check ──► duplicate? → return existing
-      │
-      ▼
-Poppler: extract text + page count
-      │
-      ▼
-Chunk text (500 words, 100-word overlap)
-      │
-      ▼
-Groq: summarize all chunks → document summary
-      │
-      ▼
-Jina: batch embed all chunks (retrieval.passage)
-      │
-      ▼
-Prisma: store Document + DocumentChunks in SQLite
-      │
-      ▼
-User asks a question
-      │
-      ▼
-Jina: embed query (retrieval.query)
-      │
-      ▼
-Adaptive retrieval:
-  corpus < 100 chunks → cosine similarity top-5
-  corpus ≥ 100 chunks → BM25 + cosine → RRF(k=60) → Jina rerank → top-5
-      │
-      ▼
-Groq: stream answer with citations (Llama 3.3 70B)
-      │
-      ▼
-Langfuse: trace embedding latency, TTFT, pre/post-rerank chunks
+┌─────────────────┐      ┌────────────────────────┐      ┌───────────────────────┐
+│ Upload PDF      │ ───► │ SHA-256 Check & Dedupe │ ───► │ Parse Text & Chunk    │
+└─────────────────┘      └────────────────────────┘      └───────────────────────┘
+                                                                     │
+                                                                     ▼
+┌─────────────────┐      ┌────────────────────────┐      ┌───────────────────────┐
+│ Streamed Answer │ ◄─── │ Groq Llama 3.3 70B RAG │ ◄─── │ Jina Hybrid Rerank    │
+│ with Citations  │      │ Prompt Generation      │      │ & Vector Retrieval    │
+└─────────────────┘      └────────────────────────┘      └───────────────────────┘
 ```
 
 ---
 
-## Getting Started
+## 🚀 Quickstart Guide
 
-### Prerequisites
-
-- Node.js 18+
-- Poppler binaries (for PDF parsing)
-  - Windows: included via `node-poppler-win32` (auto-installed)
+### 1. Prerequisites
+- **Node.js**: `v18+`
+- **npm** or **yarn**
+- **Poppler Binaries** (for PDF parsing):
   - macOS: `brew install poppler`
-  - Linux: `apt install poppler-utils`
+  - Linux: `sudo apt-get install poppler-utils`
+  - Windows: Auto-installed via `node-poppler`
 
-### 1. Clone & install
-
+### 2. Clone & Install Dependencies
 ```bash
-git clone https://github.com/your-username/wikimind-rag.git
-cd wikimind-rag
+git clone https://github.com/rajneeshverma1/Docly-AI.git
+cd Docly-AI
 npm install
 ```
 
-### 2. Environment variables
-
-Copy the example file and fill in your keys:
-
+### 3. Environment Setup
+Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
 
-| Variable | Required | Description |
-|---|---|---|
-| `DATABASE_URL` | ✅ | SQLite: `file:./dev.db` · PostgreSQL: `postgresql://...` |
-| `GROQ_API_KEY` | ✅ | [console.groq.com](https://console.groq.com) — free tier available |
-| `JINA_API_KEY` | ✅ | [jina.ai](https://jina.ai) — 1M free tokens |
-| `GEMINI_API_KEY` | ❌ | Optional alternative embedder |
-| `REDIS_URL` | ❌ | Enables async PDF queue. Omit for sync processing |
-| `LANGFUSE_SECRET_KEY` | ❌ | Enables tracing. Omit to disable |
-| `LANGFUSE_PUBLIC_KEY` | ❌ | Required if secret key is set |
-| `LANGFUSE_BASE_URL` | ❌ | Defaults to `https://us.cloud.langfuse.com` |
-| `CORS_ORIGINS` | ❌ | Defaults to `*` |
-
-### 3. Database setup
-
-```bash
-npm run db:generate   # generate Prisma client
-npm run db:migrate    # create tables
+Ensure the following variables are configured in `.env`:
+```env
+DATABASE_URL="file:./dev.db"
+GROQ_API_KEY="your_groq_api_key"
+JINA_API_KEY="your_jina_api_key"
 ```
 
-### 4. Run
+### 4. Database Setup
+Generate the Prisma Client and run migrations:
+```bash
+npx prisma generate
+npx prisma migrate dev
+```
 
+### 5. Run the Development Server
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3004](http://localhost:3004) in your browser.
 
-### 5. (Optional) Run the PDF worker
+---
 
-If `REDIS_URL` is set, start the Bull worker in a separate terminal:
+## 📁 Folder Structure
 
-```bash
-npm run worker
+```
+Docly-AI/
+├── app/                  # Next.js App Router (Pages & API Endpoints)
+│   ├── page.tsx          # Homepage (Dark Aesthetic Hero Section)
+│   ├── chat/page.tsx     # Chat & PDF Upload Workspace
+│   └── api/              # RAG, Upload, and Document API routes
+├── components/           # React UI Components
+│   ├── Header.tsx        # Dark Navigation Bar
+│   ├── FileUpload.tsx    # Drag-and-drop PDF uploader
+│   ├── ChatMessage.tsx   # Message rendering with citation badges
+│   └── DocumentList.tsx  # Document sidebar list
+├── lib/                  # Core RAG, Database & AI integrations
+│   ├── db.ts             # Prisma vector search & BM25 retrieval
+│   ├── jina.ts           # Jina embedding & reranking client
+│   └── groq.ts           # Groq LLM integration
+├── prisma/               # Database Schema & SQLite Database
+└── package.json          # Dependencies & npm scripts
 ```
 
 ---
 
-## Project Structure
+## 📄 License
 
-```
-wikimind-rag/
-├── app/
-│   ├── layout.tsx              # Root layout, metadata
-│   ├── page.tsx                # Landing page
-│   ├── globals.css             # Tailwind + CSS variables (B&W theme)
-│   ├── chat/
-│   │   └── page.tsx            # Chat interface
-│   └── api/
-│       ├── chat/route.ts       # Streaming RAG endpoint (Zod-validated)
-│       ├── upload/route.ts     # PDF upload + dedup + queue/sync
-│       ├── documents/
-│       │   ├── route.ts        # List / delete documents
-│       │   └── chunks/route.ts # Export chunks as JSON
-│       ├── feedback/route.ts   # Langfuse feedback endpoint
-│       ├── health/route.ts     # GET /api/health — DB ping + version
-│       └── jobs/[jobId]/route.ts # Bull job status polling
-├── components/
-│   ├── ui/                     # shadcn/ui primitives
-│   ├── Header.tsx
-│   ├── ChatMessage.tsx         # Message bubble + feedback buttons
-│   ├── ChatInput.tsx           # Textarea + send button
-│   ├── FileUpload.tsx          # Dropzone + link/Notion/GDocs form
-│   ├── DocumentList.tsx        # Sidebar document list
-│   └── LoadingDots.tsx
-├── lib/
-│   ├── db.ts                   # Prisma client, vector search, BM25, RRF
-│   ├── jina.ts                 # Jina embeddings + reranker
-│   ├── groq.ts                 # Groq summarization
-│   ├── gemini.ts               # Gemini embeddings (optional)
-│   ├── pdf-parser.ts           # Chunking logic
-│   ├── poppler-parser.ts       # Poppler PDF → text
-│   ├── pdf-processor.ts        # Orchestrates parse → embed → store
-│   ├── queue.ts                # Bull queue helpers
-│   ├── redis.ts                # Redis cache helpers
-│   ├── hash.ts                 # SHA-256 content hash
-│   ├── config.ts               # Centralised constants (chunk size, top-K, models)
-│   ├── errors.ts               # Typed error classes (AppError, ValidationError…)
-│   ├── logger.ts               # Structured JSON logger
-│   ├── prompts.ts              # System prompt
-│   └── utils.ts                # cn() utility
-├── prisma/
-│   ├── schema.prisma           # Document + DocumentChunk models
-│   └── migrations/
-├── scripts/
-│   └── run-pdf-worker.ts       # Bull worker entry point
-├── types/
-│   └── index.ts                # Shared TypeScript types
-├── instrumentation.ts          # OpenTelemetry + Langfuse setup
-├── .env.example
-├── docker-compose.yml          # PostgreSQL + Redis for production
-└── next.config.js
-```
+Distributed under the MIT License. See `LICENSE` for details.
 
----
-
-## Docker (PostgreSQL + Redis)
-
-For production-like local setup:
-
-```bash
-docker compose up -d
-```
-
-Then update `.env`:
-
-```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/smartdoc"
-REDIS_URL=redis://localhost:6379
-```
-
-Re-run migrations:
-
-```bash
-npm run db:migrate
-```
-
----
-
-## Known Limitations
-
-- No authentication — all users share the same document store
-- Max 3 documents per session (configurable in `app/api/upload/route.ts`)
-- Vector search loads all chunks into memory (fine for <10k chunks; use pgvector for larger corpora)
-- Notion and Google Docs source types are registered but content ingestion is not yet implemented
-
----
-
-## Roadmap
-
-- [ ] Authentication (Clerk / Auth0)
-- [ ] Per-user document isolation
-- [ ] pgvector for scalable vector search
-- [ ] Notion API content ingestion
-- [ ] Google Docs API content ingestion
-- [ ] Chat history persistence
-- [ ] Export conversation as PDF/Markdown
-- [ ] Rate limiting on API routes
-
----
-
-## License
-
-MIT — see [LICENSE](LICENSE).
-
-Original scaffold: **SmartDoc AI** — MIT License.
-Modifications and extensions: **Rajneesh Verma**, 2025.
-
----
-
-## Acknowledgements
-
-- [Next.js](https://nextjs.org/)
-- [Groq](https://groq.com/) — ultra-fast LLM inference
-- [Jina AI](https://jina.ai/) — embeddings and reranking
-- [Prisma](https://prisma.io/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Langfuse](https://langfuse.com/) — LLM observability
-
-- Dev note 1: incremental maintenance update on 2026-02-24.
-
-- Dev note 11: incremental maintenance update on 2026-03-06.
-
-- Dev note 21: incremental maintenance update on 2026-03-16.
-
-- Dev note 1: incremental maintenance update on 2026-02-24.
-
-- Dev note 11: incremental maintenance update on 2026-03-06.
-
-- Dev note 21: incremental maintenance update on 2026-03-16.
+Developed with ❤️ by **[Rajneesh Verma](https://github.com/rajneeshverma1)**.
