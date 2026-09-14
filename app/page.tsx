@@ -87,13 +87,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-zinc-800 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-600 text-sm">
-          <p>build by rajneesh</p>
-        </div>
-      </footer>
     </div>
   );
 }
